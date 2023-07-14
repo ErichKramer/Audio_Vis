@@ -1,10 +1,5 @@
 # Audio_Vis
-This cool thing I made
+The sands of time have erased any living record of a live version or video of this, and it is currently defunct.
 
-See a working demo at this link: 
-http://web.engr.oregonstate.edu/~kramerer/Audio.html
+If you want to see it in action, you are best of directly asking me to get it working.
 
-Currently It is only known to work on firefox browser. Also it is not compatible with all operating systems.
-
-Here is a video of it working:
-https://youtu.be/dWrxdlPamgA
