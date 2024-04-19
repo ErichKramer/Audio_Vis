@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="style.css">
+		<script src="./js/three.js"></script>
+		<title>WebGL</title>
+<script id="cubeVertexShader" type="x-shader/x-vertex">
+    uniform float time;
+ 	uniform int freqSamp[1024];//array of vals
+   	varying vec2 vUv;
+	varying float terpo;
+	
+	const float uSize = 10.;
+    void main() {
+        vUv = uv;
+		float extrude = 0.0;
+		float s = 2. * uv.s;
+		float t = 1. - uv.t;
+
+/*Deprecated s-t coord examination
+		int checker = int(s*uSize) + int(t*uSize);
+		float tmp = mod(float(checker), 2.);
+		if(int(tmp) == 0 ){
+			extrude = .2;//zSpot;
+		}
+*/
+		vec3 n_Pos = position;//default behavior, can be removed
+			
+		float zSpot = float(freqSamp[int(t * 1024.)])/255.;
+
+//key off of t coords for clearer extrudes
+		extrude = zSpot;
+
+		n_Pos = (1. + extrude)*position;
+
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(n_Pos, 1.0);
+		terpo = extrude ;
+    }
+</script>
+<script id="cubeFragmentShader" type="x-shader/x-fragment">
+        uniform float time;
+        varying vec2 vUv;
+		varying float terpo;//varies from 0 to 1
+ 
+        void main() {
+            vec2 position = -1.0 + 2.0 * vUv;
+ 
+            float red = 1.0;
+            float green = 1.0;
+			float blue = 1.0;
+			if(terpo < .5){
+	            blue = abs(1. - (terpo * 2.));
+				red = 0.0;
+			}
+			else{
+				blue = 0.0;
+				red = abs(1. -  (terpo*2.));
+			}
+			green = 1. - abs(terpo - .5);
+            gl_FragColor = vec4(red, green, blue, 1.0);
+
+        }
+</script>
+
+	</head>
+	<body>
+		<audio id="myAudio" src="sounds/redbone.mp3"></audio>
+
+		<script src="./main.js"></script> 
+	</body>
+</html>
+
+
